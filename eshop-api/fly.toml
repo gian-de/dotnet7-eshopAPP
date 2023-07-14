@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for eshopapidotnet on 2023-07-12T16:48:47-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "eshopapidotnet"
+primary_region = "dfw"
+
+[build]
+  image = "giande/eshopapi:latest"
+
+[env]
+  ASPNETCORE_URLS="http://+:80"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]

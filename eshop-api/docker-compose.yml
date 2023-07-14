@@ -1,0 +1,40 @@
+version: "3.4"
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  eshop-app:
+    image: giande/eshopapi:latest
+    depends_on:
+      - "eshop_db"
+    container_name: eshopapi-services
+    ports:
+      - "8088:80"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=REMEreme;Server=eshop_db;Port=5432;Database=eshopdb; Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - dev
+
+  eshop_db:
+    image: postgres:latest
+    container_name: eshop_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=REMEreme
+      - POSTGRES_DB=eshopdb
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  app_data:
